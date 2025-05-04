@@ -1,4 +1,4 @@
-package com.economizei.api.controlleres;
+package com.economizei.api.controllers;
 
 import com.economizei.api.domain.transaction.model.dto.DataTransactionDto;
 import com.economizei.api.domain.transaction.model.dto.RegisterTransactionDto;

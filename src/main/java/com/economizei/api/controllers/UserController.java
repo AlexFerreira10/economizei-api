@@ -1,4 +1,4 @@
-package com.economizei.api.controlleres;
+package com.economizei.api.controllers;
 
 import com.economizei.api.domain.user.model.dto.DataUserDto;
 import com.economizei.api.domain.user.model.dto.RegisterUserDto;
