@@ -1,7 +1,7 @@
-package com.economizei.api.statment.domain.model;
+package com.economizei.api.domain.statment.model;
 
-import com.economizei.api.transaction.domain.model.Transaction;
-import com.economizei.api.user.domain.model.User;
+import com.economizei.api.domain.transaction.model.Transaction;
+import com.economizei.api.domain.user.model.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
