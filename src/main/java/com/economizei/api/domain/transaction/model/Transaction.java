@@ -1,12 +1,12 @@
-package com.economizei.api.transaction.domain.model;
+package com.economizei.api.domain.transaction.model;
 
-import com.economizei.api.statment.domain.model.Statement;
+import com.economizei.api.domain.statement.model.Statement;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -20,12 +20,20 @@ public class Transaction {
 
     private String description;
     private Double amount;
-    private LocalDate dueDate;
+    private LocalDateTime dueDate;
 
     @Enumerated(EnumType.STRING)
     private TransactionType type;
 
     @ManyToOne
-    @JoinColumn(name = "statement_id")
+    @JoinColumn(name = "statement_id", nullable = false)
     private Statement statement;
+
+    public Transaction(String description, Double amount, TransactionType type, Statement statement) {
+        this.description = description;
+        this.amount = amount;
+        this.dueDate = LocalDateTime.now();
+        this.type = type;
+        this.statement = statement;
+    }
 }

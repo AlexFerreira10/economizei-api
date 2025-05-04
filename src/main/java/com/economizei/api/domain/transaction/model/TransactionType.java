@@ -1,4 +1,4 @@
-package com.economizei.api.transaction.domain.model;
+package com.economizei.api.domain.transaction.model;
 
 public enum TransactionType {
     INCOME,
