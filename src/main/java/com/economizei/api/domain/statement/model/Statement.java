@@ -1,7 +1,8 @@
-package com.economizei.api.domain.statment.model;
+package com.economizei.api.domain.statement.model;
 
+import com.economizei.api.domain.bankaccount.model.BankAccount;
 import com.economizei.api.domain.transaction.model.Transaction;
-import com.economizei.api.domain.user.model.User;
+import com.economizei.api.domain.transaction.model.TransactionType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,10 +25,23 @@ public class Statement {
 
     private LocalDate period;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @ManyToOne @JoinColumn(name = "bank_account_id", nullable = false)
+    private BankAccount bankAccount;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "statement")
+    @OneToMany(mappedBy = "statement", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Transaction> transactions = new ArrayList<>();
+
+    public void addTransaction(Transaction transaction) {
+        transaction.setStatement(this);
+        this.transactions.add(transaction);
+        recalcTotal();
+    }
+
+    public void recalcTotal() {
+        this.totalAmount = this.transactions.stream()
+                .mapToDouble(t -> t.getType() == TransactionType.INCOME
+                        ? t.getAmount()
+                        : -t.getAmount())
+                .sum();
+    }
 }
