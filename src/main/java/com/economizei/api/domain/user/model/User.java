@@ -1,13 +1,11 @@
-package com.economizei.api.user.domain.model;
+package com.economizei.api.domain.user.model;
 
-import com.economizei.api.statment.domain.model.Statement;
-import com.economizei.api.user.domain.model.dto.UpdateUserDto;
+import com.economizei.api.domain.statement.model.Statement;
+import com.economizei.api.domain.user.model.dto.UpdateUserDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,14 +19,17 @@ public class User {
     private Long id;
 
     private String name;
+
+    @Column(unique = true)
     private String cpf;
+
+    @Column(unique = true)
     private String phone;
+
+    @Column(unique = true)
     private String email;
     private String password;
     private Boolean isActive;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private List<Statement> statements = new ArrayList<>();
 
     public User(String name, String phone, String cpf, String email, String password, List<Statement> statements) {
         this.name = name;
@@ -36,7 +37,6 @@ public class User {
         this.cpf = cpf;
         this.email = email;
         this.password = password;
-        this.statements = statements;
         this.isActive = true;
     }
 
