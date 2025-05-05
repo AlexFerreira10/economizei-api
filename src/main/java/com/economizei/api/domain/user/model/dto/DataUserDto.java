@@ -7,8 +7,7 @@ public record DataUserDto(
         String name,
         String cpf,
         String phone,
-        String email,
-        String password
+        String email
 ) {
     public DataUserDto(User user) {
         this(
@@ -16,8 +15,7 @@ public record DataUserDto(
                 user.getName(),
                 user.getCpf(),
                 user.getPhone(),
-                user.getEmail(),
-                user.getPassword()
+                user.getEmail()
         );
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 
 @RestController
+@RequestMapping("/transactions")
 @Tag(name = "Transactions", description = "APIs for creating transactions")
 public class TransactionController {
 
