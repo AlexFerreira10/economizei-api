@@ -24,18 +24,32 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/authentication/login", "/users/register").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
+    http
+        .csrf(AbstractHttpConfigurer::disable)
+        .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests(auth -> auth
+            // Rotas públicas
+            .requestMatchers(HttpMethod.POST, 
+                "/authentication/login", 
+                "/users/register"
+            ).permitAll()
+            
+            // Documentação Swagger
+            .requestMatchers(
+                "/swagger-ui.html",
+                "/swagger-ui/**",
+                "/v3/api-docs/**",
+                "/swagger-resources/**",
+                "/webjars/**"
+            ).permitAll()
+            
+            // Todas outras rotas exigem autenticação
+            .anyRequest().authenticated()
+        )
+        .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
 
-        return http.build();
-    }
+    return http.build();
+}
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception{

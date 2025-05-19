@@ -23,7 +23,7 @@ public class BankAccountService {
     private UserService userService;
 
     @Transactional
-    public DataBankAccountDto registerBankAcoount(RegisterBankAccountDto bankAccountDto) {
+    public DataBankAccountDto registerBankAccount(RegisterBankAccountDto bankAccountDto) {
 
         User user = userService.getUserEntityById(bankAccountDto.userId());
 

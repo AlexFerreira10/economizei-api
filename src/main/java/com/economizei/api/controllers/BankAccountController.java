@@ -26,7 +26,7 @@ public class BankAccountController {
     @Operation(summary = "Register a new bank account")
     @PostMapping("/register")
     public ResponseEntity<DataBankAccountDto> register(@RequestBody @Valid RegisterBankAccountDto dto, UriComponentsBuilder uriBuilder) {
-        DataBankAccountDto created = bankAccountService.registerBankAcoount(dto);
+        DataBankAccountDto created = bankAccountService.registerBankAccount(dto);
 
         URI uri = uriBuilder
                 .path("/bank-accounts/{id}")

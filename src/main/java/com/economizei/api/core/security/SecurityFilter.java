@@ -21,21 +21,31 @@ public class SecurityFilter extends OncePerRequestFilter {
     private  UserAuthenticationService userAuthenticationService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        var token = recoverToken(request);
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    throws ServletException, IOException {
 
-        if(token != null) {
-            var subject = tokenService.generateSubject(token);
-            var user = userAuthenticationService.loadUserByUsername(subject);
-
-            var auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-
-            SecurityContextHolder.getContext().setAuthentication(auth);
-        }
-
+    String path = request.getRequestURI();
+    
+    // Lista de endpoints públicos
+    if (path.startsWith("/v3/api-docs") || 
+        path.startsWith("/swagger-ui") ||
+        path.startsWith("/authentication/login")) {
         filterChain.doFilter(request, response);
+        return;
     }
 
+    var token = recoverToken(request);
+
+    if (token != null) {
+        var subject = tokenService.generateSubject(token);
+        var user = userAuthenticationService.loadUserByUsername(subject);
+
+        var auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(auth);
+    }
+
+    filterChain.doFilter(request, response);
+}
 
     private String recoverToken(HttpServletRequest request) {
         var authHeader = request.getHeader("Authorization");

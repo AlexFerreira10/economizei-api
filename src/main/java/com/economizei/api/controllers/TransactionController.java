@@ -3,6 +3,8 @@ package com.economizei.api.controllers;
 import com.economizei.api.domain.transaction.model.dto.DataTransactionDto;
 import com.economizei.api.domain.transaction.model.dto.RegisterTransactionDto;
 import com.economizei.api.domain.transaction.service.TransactionService;
+
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ public class TransactionController {
     @Autowired
     private TransactionService transactionService;
 
+    @Operation(summary = "Register a new transaction")
     @PostMapping("/register")
     public ResponseEntity<DataTransactionDto> register(@RequestBody @Valid RegisterTransactionDto dto, UriComponentsBuilder uriBuilder) {
         DataTransactionDto created = transactionService.registerTransaction(dto);
