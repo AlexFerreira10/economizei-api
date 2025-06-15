@@ -1,14 +1,13 @@
 package com.economizei.api.controllers;
 
-import com.economizei.api.domain.user.model.dto.DataUserDto;
-import com.economizei.api.domain.user.model.dto.RegisterUserDto;
-import com.economizei.api.domain.user.model.dto.UpdateUserDto;
+import com.economizei.api.domain.user.model.dto.*;
 import com.economizei.api.domain.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
@@ -56,5 +55,21 @@ public class UserController {
         userService.disableUserAccount(id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Update password user data")
+    @PatchMapping("/change-password")
+    public ResponseEntity<DataUserDto> changePassword(@RequestBody @Valid ChangePasswordDto dto) {
+        DataUserDto updated = userService.changePassword(dto);
+        SecurityContextHolder.clearContext();
+        return ResponseEntity.ok(updated);
+    }
+
+    @Operation(summary = "Update email user data")
+    @PatchMapping("/change-email")
+    public ResponseEntity<DataUserDto> changeEmail(@RequestBody @Valid ChangeEmailDto dto) {
+        DataUserDto updated = userService.changeEmail(dto);
+        SecurityContextHolder.clearContext();
+        return ResponseEntity.ok(updated);
     }
 }

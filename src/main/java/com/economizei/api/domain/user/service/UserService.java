@@ -1,10 +1,9 @@
 package com.economizei.api.domain.user.service;
 
 import com.economizei.api.domain.user.model.User;
-import com.economizei.api.domain.user.model.dto.DataUserDto;
-import com.economizei.api.domain.user.model.dto.RegisterUserDto;
-import com.economizei.api.domain.user.model.dto.UpdateUserDto;
+import com.economizei.api.domain.user.model.dto.*;
 import com.economizei.api.domain.user.repository.UserRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,6 +68,23 @@ public class UserService {
     public List<User> getAllUsersEntity() {
         return userRepository.findAll();
     }
+
+    @Transactional
+    public DataUserDto changePassword(@Valid ChangePasswordDto dto) {
+        existsById(dto.userId());
+        User user = userRepository.getReferenceById(dto.userId());
+        user.setPassword(dto.newPassword());
+        return new DataUserDto(user);
+    }
+
+    @Transactional
+    public DataUserDto changeEmail(@Valid ChangeEmailDto dto) {
+        existsById(dto.userId());
+        User user = userRepository.getReferenceById(dto.userId());
+        user.setEmail(dto.newEmail());
+        return new DataUserDto(user);
+    }
+
 
     private void existsById(Long id) {
         if(!userRepository.existsById(id)) {

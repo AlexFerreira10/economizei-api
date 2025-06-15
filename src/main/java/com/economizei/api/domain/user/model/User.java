@@ -70,6 +70,10 @@ public class User implements UserDetails {
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
+    public void setPassword(String password) {
+        this.password = encryptPassword(password);
+    }
+
     @Override
     public String getUsername() {
         return email;
