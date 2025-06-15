@@ -1,8 +1,11 @@
 package com.economizei.api.domain.transaction.model.dto;
 
+import com.economizei.api.domain.category.model.Category;
 import com.economizei.api.domain.transaction.model.Transaction;
 import com.economizei.api.domain.transaction.model.TransactionType;
 import jakarta.validation.constraints.*;
+
+import java.util.List;
 
 public record RegisterTransactionDto(
 
@@ -16,15 +19,21 @@ public record RegisterTransactionDto(
         Double amount,
 
         @NotNull(message = "Transaction type must not be null")
-        TransactionType type
+        TransactionType type,
+
+        List<Long> categoryIds
 
 ) {
     public RegisterTransactionDto(Transaction transaction) {
         this(
-                transaction.getStatement().getBankAccount().getUser().getId(),
+                transaction.getStatement().getId(),
                 transaction.getDescription(),
                 transaction.getAmount(),
-                transaction.getType()
+                transaction.getType(),
+                transaction.getCategories()
+                        .stream()
+                        .map(Category::getId)
+                        .toList()
         );
     }
 }
